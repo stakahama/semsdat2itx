@@ -14,10 +14,12 @@
 ## $ python sems2itx.py /path/to/data/
 ############################################################
 
-from calendar import timegm
-from time import strptime, gmtime
+###_ * load libraries
+
 import os
 import sys
+from calendar import timegm
+from time import strptime, gmtime
 
 ###_* define functions
 
@@ -54,7 +56,7 @@ def readbytime(f):
 def list2txt(x,trans=0):
     # 'transs' is an argument indicating whether to
     #     transpose or apply another transformation
-    if transs == 1:
+    if trans == 1:
         out = map(lambda x: ['']+x, x)
     elif trans == 2:
         out = zip(['']*len(x[0]),*x)        
