@@ -54,7 +54,7 @@ def readbytime(f):
             yield {'time':tm, 'diam':diam, 'conc':nconc, 'extra':extra}
 
 def list2txt(x,trans=0):
-    # 'transs' is an argument indicating whether to
+    # 'trans' is an argument indicating whether to
     #     transpose or apply another transformation
     if trans == 1:
         out = map(lambda x: ['']+x, x)
