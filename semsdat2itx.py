@@ -24,19 +24,22 @@ from time import strptime, gmtime
 ###_* define functions
 
 ###_ . auxiliary
+def igortime(t, epoch = timegm(strptime("01/01/1904 00:00:00","%m/%d/%Y %H:%M:%S"))):
+    return timegm(strptime(t,'%m/%d/%y %H:%M:%S'))-epoch
+
 def int2date(x):
     return x[2:4] + '/' + x[4:6] + '/' + x[:2]
 
-def header(args,name):
-    return """WAVES%s %s
-BEGIN
-""" % (args,name)
-
-def footer(args=None):
-    if args:
-        return "END\nX " + args + "\n"
+def list2txt(x,trans=0):
+    # 'trans' is an argument indicating whether to
+    #     transpose or apply another transformation
+    if trans == 1:
+        out = map(lambda x: ['']+x, x)
+    elif trans == 2:
+        out = zip(['']*len(x[0]),*x)        
     else:
-        return "END\n"
+        out = zip(['']*len(x),x)
+    return '\n'.join(map('\t'.join,out))+'\n'
 
 ###_ . read/write
 def readbytime(f):
@@ -53,19 +56,16 @@ def readbytime(f):
         elif len(line)==0:
             yield {'time':tm, 'diam':diam, 'conc':nconc, 'extra':extra}
 
-def list2txt(x,trans=0):
-    # 'trans' is an argument indicating whether to
-    #     transpose or apply another transformation
-    if trans == 1:
-        out = map(lambda x: ['']+x, x)
-    elif trans == 2:
-        out = zip(['']*len(x[0]),*x)        
-    else:
-        out = zip(['']*len(x),x)
-    return '\n'.join(map('\t'.join,out))+'\n'
+def header(args,name):
+    return """WAVES%s %s
+BEGIN
+""" % (args,name)
 
-def igortime(t, epoch = timegm(strptime("01/01/1904 00:00:00","%m/%d/%Y %H:%M:%S"))):
-    return timegm(strptime(t,'%m/%d/%y %H:%M:%S'))-epoch
+def footer(args=None):
+    if args:
+        return "END\nX " + args + "\n"
+    else:
+        return "END\n"
 
 def ReadWrite(filename):
     ## get date
